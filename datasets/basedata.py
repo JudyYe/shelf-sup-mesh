@@ -20,7 +20,7 @@ class BaseData(Dataset):
         self.train = train
 
         self.inp_size = cfg.high_reso
-        self.out_size = cfg.output_height
+        self.out_size = cfg.low_reso
 
         # transformation
         self.pad_frac = cfg.PAD_FRAC
@@ -164,8 +164,8 @@ class BaseData(Dataset):
     def resize_image(self, sample):
         for key in ['image', 'mask']:
             image = sample[key]
-            sample[key] = image_utils.resize(image, self.cfg.SIZE.OUTPUT)
-            sample[key + '_inp'] = image_utils.resize(image, self.cfg.SIZE.INPUT)
+            sample[key] = image_utils.resize(image, self.out_size)
+            sample[key + '_inp'] = image_utils.resize(image, self.inp_size)
         return sample
 
     def rand_flip_lr(self, sample):

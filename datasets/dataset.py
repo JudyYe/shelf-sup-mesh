@@ -17,10 +17,10 @@ def build_dataloader(cfg, split, is_train=True, shuffle=None, name=None):
     if shuffle is None:
         shuffle = is_train
     # test: for vis sakes, limit batch size within 16.
-    bs = cfg.SOLVER.BATCH_SIZE if is_train else min(16, cfg.SOLVER.BATCH_SIZE)
+    bs = cfg.batch_size if is_train else min(16, cfg.batch_size)
 
     if name is None:
-        name = cfg.DB.NAME
+        name = cfg.dataset
     dataset = [build_dataset(cfg, each_name, split, is_train) for each_name in name.split('+')]
     dataset = ConcatDataset(dataset)
     loader = DataLoader(dataset, batch_size=bs, collate_fn=collate_meshes,
@@ -32,7 +32,7 @@ def build_dataset(args, name, split, is_train=True):
     # Curated-3
     if name.startswith('cub'):
         from .cub import CUB as dset
-    elif name == 'chair':
+    elif name == 'allChair':
         from .chair import AllChair as dset
     elif name[0:2] == 'im':
         from .quadruped import QuadImNet as dset

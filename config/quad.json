@@ -1,0 +1,11 @@
+{
+  "ele_low":-60,
+  "ele_high":60,
+  "azi_low": -180,
+  "azi_high": 180,
+  "scale_low":0.8,
+  "scale_high":1.25,
+  "padding_frac": 0.1,
+  "f": 375,
+  "rho": 400
+}

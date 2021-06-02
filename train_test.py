@@ -7,7 +7,7 @@ import os
 
 import torch
 
-from models.Trainer import TrainerFactory
+from models.trainer import TrainerFactory
 from models.evaluator import Evaluator
 
 from absl import app
