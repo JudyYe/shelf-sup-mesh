@@ -58,6 +58,9 @@ class Evaluator(object):
                 N = batch_z.size(0)
                 device = batch_z.device
                 feat_word, vox_world = model.decoder.reconstruct_can(batch_z, view_list)
+                recon = model.decoder.render_k_views((feat_word, feat_img), vox_world, batch_z, view_list)
+                image_utils.save_images(recon['mask'] * 2 - 1, osp.join(save_dir, '%d_vox' % i))
+
                 vox_mesh = mesh_utils.cubify(vox_world, FLAGS.mesh_th)
 
                 can_pose_list = []
@@ -111,7 +114,6 @@ class Evaluator(object):
                 can_pose_list.append(sample_view)
 
             feat_world, vox_world = model.decoder.reconstruct_can(recon_z, view_list)
-            model.decoder.render_k_views((feat_world, _), vox_world, recon_z, view_list)
             vox_mesh = mesh_utils.cubify(vox_world).clone()
             camera_param = mesh_utils.param_to_7dof_batcch(para_list, self.cfg['f'], use_scale=False,
                                                            use_rho=False).clone()

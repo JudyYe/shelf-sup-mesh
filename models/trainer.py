@@ -70,7 +70,8 @@ class BaseTrainer(object):
             break
 
     def build_val(self):
-        save_dir = "outputs/"
+        # save_dir = "outputs/"
+        save_dir = "/glusterfs/yufeiy2/transfer/HoloGAN"
         checkpoint = FLAGS.checkpoint
 
         print('Init...', checkpoint)

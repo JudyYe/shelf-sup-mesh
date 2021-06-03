@@ -121,7 +121,7 @@ def save_images(images, fname, text_list=[None],col=8, scale=False, bg=None, mas
     if save_idv:
         for n in range(len(images)):
             os.makedirs(fname, exist_ok=True)
-            write_to_png(os.path.join(fname, '%d' % n), images[n: n+1], [text_list[n]], col=1)
+            write_to_png( images[n: n+1], os.path.join(fname, '%d' % n),[text_list[n]], col=1)
 
     return merge_image
 

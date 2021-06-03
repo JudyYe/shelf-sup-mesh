@@ -151,3 +151,13 @@ flags.DEFINE_integer('test_size', 8, '')
 # train
 flags.DEFINE_string("gpu", "3", "gpu")
 
+
+# deprecated
+flags.DEFINE_float('d_loss_hallc', 0. , 'deprecated')
+flags.DEFINE_float('flow_loss', 0. , 'deprecated')
+flags.DEFINE_float('ft', 0. , 'deprecated')
+flags.DEFINE_float('ft_disc', 0. , 'deprecated')
+flags.DEFINE_float('share_disc', 0. , 'deprecated')
+flags.DEFINE_float('tight_crop', 0. , 'deprecated')
+flags.DEFINE_float('noise', 0. , 'deprecated')
+flags.DEFINE_string('noise_type', 'n' , 'deprecated')

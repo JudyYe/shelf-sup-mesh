@@ -21,7 +21,7 @@ def train_test():
     os.environ["CUDA_VISIBLE_DEVICES"] = FLAGS.gpu
     if not FLAGS.train and FLAGS.checkpoint is not None:
         # test
-        print('loading from flag file', FLAGS.exp, FLAGS.cyc_normal_loss, FLAGS.filter_trunc)
+        print('loading from flag file', FLAGS.exp)
         print('test!!!!')
         trainer = TrainerFactory(FLAGS.g_mod)
         evaluator = Evaluator(trainer.cfg)
