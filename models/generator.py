@@ -27,14 +27,11 @@ class ReconstructModel(nn.Module):
         self.decoder = Decoder(FLAGS.infer, FLAGS.vol_render,
                                FLAGS.gf_dim, FLAGS.c_dim, FLAGS.z_dim, FLAGS.vol_norm)
 
-    def forward_image(self, fg, image):
-        (batch_z, feat_img), (view_list, para_list) = self.encoder(fg)
-        if FLAGS.know_fg >= 2:
-            (_, feat_img), (_, _) = self.encoder(image)
+    def forward_image(self, fg):
+        (batch_z, feat_img), (view_list, para_list, param_u) = self.encoder(fg)
         feat_word, vox_world = self.decoder.reconstruct_can(batch_z, view_list)
-        can_mesh = self.decoder.reconstruct_mesh((feat_word, feat_img), vox_world, None, para_list, FLAGS.mesh_th)
         pred_view = mesh_utils.param_to_7dof_batcch(para_list, self.decoder.cfg['f'])
-        return can_mesh, pred_view
+        return vox_world, pred_view
 
     def encode_content(self, image):
         (recon_z, img_feat), (view_v, param_v, param_u) = self.encoder(image)

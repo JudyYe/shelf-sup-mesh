@@ -56,13 +56,13 @@ def load_my_state_dict(model: torch.nn.Module, state_dict):
     own_state = model.state_dict()
     for name, param in state_dict.items():
         if name not in own_state:
-            print('Not found in checkpoint', name)
+            # print('Not found in checkpoint', name)
             continue
         if isinstance(param, torch.nn.Parameter):
             # backwards compatibility for serialized parameters
             param = param.data
         if param.size() != own_state[name].size():
-            print('size not match', name, param.size(), own_state[name].size())
+            # print('size not match', name, param.size(), own_state[name].size())
             continue
         own_state[name].copy_(param)
 

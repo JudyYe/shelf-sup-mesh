@@ -298,15 +298,13 @@ class Evaluator(object):
             mode = 'v' + mode
 
         render = kwargs.get('render', self.mesh_render)
-        # l_c = kwargs.get('l_c', np.array([0.65, 0.3, 0.0]))
-        l_c = kwargs.get('l_c', np.array([0.3, 0.65, 0.0]))
+        l_c = kwargs.get('l_c', np.array([0.65, 0.3, 0.0]))
         for v, view_param in enumerate(view_list):
             if view_param.size(-1) == 6:
                 view_param = mesh_utils.param_to_7dof_batcch(view_param, self.cfg['f'])
             l_u = mesh_utils.get_light_direction(view_param)
             image = render(meshes, view_param, texture, light_direction=l_u, light_color=l_c)
             image_utils.save_images(image['image'], osp.join(save_dir, '%s_%s_v%d' % (prefix, name, v)))
-            # self.save_image(image['image'] * 2 - 1, save_dir, prefix, name + '_v%d' % v, merge)
 
         image = self.render_mesh_rot(mode, meshes, texture, render=render)
         image_utils.save_gifs(image, osp.join(save_dir, '%s_%s_az' % (prefix, name)))
@@ -373,9 +371,6 @@ class Evaluator(object):
         N = real['image'].size(0)
         loss = 0
 
-        if FLAGS.cyc_normal_loss > 0:
-            cos_loss = -F.cosine_similarity(render['normal'], real['normal'])
-            loss = loss + FLAGS.cyc_normal_loss * (cos_loss * real['mask']).reshape(N, -1).mean(dim=-1)
         loss = loss + FLAGS.cyc_mask_loss * (render['mask'] - real['mask']).abs().reshape(N, -1).mean(dim=-1)
         loss = loss + FLAGS.cyc_loss * (render['image'] - real['image']).abs().reshape(N, -1).mean(dim=-1)
 

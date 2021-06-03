@@ -4,14 +4,17 @@
 from __future__ import print_function
 
 import json
+import os
 
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import absl.flags as flags
+from absl import app
+
 FLAGS = flags.FLAGS
 
-from nnutils import geom_utils
+from nnutils import geom_utils, image_utils
 
 
 #   input: 3D voxel (X), view param (az,el,s,xyz,f)
@@ -70,7 +73,7 @@ class Perspective3d(nn.Module):
         y = y.squeeze(-1)
         z = z.squeeze(-1)
 
-        f = f.view(N, 1, 1, 1)
+        # f = f.view(N, 1, 1, 1)
         x = f * x / z
         y = f * y / z
         z = z - geom_utils.calc_rho(f)
@@ -97,7 +100,8 @@ class Perspective3d(nn.Module):
         grid = torch.stack([x_t, y_t, z_t, ones], dim=-1)
         return grid
 
-    def project(self, voxels, views, f, out_size=32, out_depth=32):
+    def project(self, voxels, views, out_size=32, out_depth=32, f=None):
+        f = self.f if f is None else f
         N = voxels.size(0)
         wTc = get_camera2world(views, f)  # camera-to-world matrix
         cGrid = self.ray2camera_grid(out_size, out_depth, f, N, device=voxels.device)
@@ -106,7 +110,8 @@ class Perspective3d(nn.Module):
         voxels = F.grid_sample(voxels, wGrid, align_corners=True)
         return voxels
 
-    def backproj(self, voxels, views, f, out_size=32, out_depth=32):
+    def backproj(self, voxels, views, out_size=32, out_depth=32, f=None):
+        f = self.f if f is None else f
         N = voxels.size(0)
         cTw = get_world2camera(views, f)  # world-to-camera matrix
         wGrid = self.world_grid(N, out_size, out_depth, device=voxels.device)
@@ -118,9 +123,9 @@ class Perspective3d(nn.Module):
     def forward(self,  voxels, views, out_size=32, out_depth=32, inv=False, f=None):
         f = self.f if f is None else f
         if inv:
-            return self.project(voxels, views, f, out_size, out_depth)
+            return self.project(voxels, views,  out_size, out_depth, f,)
         else:
-            return self.backproj(voxels, views, f, out_size, out_depth)
+            return self.backproj(voxels, views,  out_size, out_depth, f,)
 
 
 #### Pose to world-to-view-mat ####
@@ -131,6 +136,8 @@ def get_world2camera(param, f):
     """
     # scale, rot, trans, = geom_utils.param_to_srtf(param)
     scale, trans, rot = param
+    # overwrite z distance to camera from f.
+    trans = trans.clone()
     trans[..., -1] = geom_utils.calc_rho(f)
 
     # legacy: rot is rot^T
@@ -145,6 +152,8 @@ def get_world2camera(param, f):
 def get_camera2world(param, f):
     # scale, rot, trans, = geom_utils.param_to_srtf(param)
     scale, trans, rot = param
+    # overwrite z distance to camera from f.
+    trans = trans.clone()
     trans[..., -1] = geom_utils.calc_rho(f)
 
     # legacy: rot is rot^T
@@ -155,13 +164,28 @@ def get_camera2world(param, f):
     return wTc
 
 
-if __name__ == '__main__':
+def main(_):
     device = 'cuda'
     layer = Perspective3d().to(device)
     H = W = D = 16
     N = 1
     vox = torch.zeros([N, 1, D, H, W], device=device)
+    vox[..., 0:D // 2, 0:H//2, 0:W//2] = 1
 
-    param = torch.FloatTensor([0, 0, 1, 0, 0, 2])
-    view = geom_utils.azel2uni(param)
-    f = 375
+    for i in range(-30, 30, 10):
+        param = torch.FloatTensor([[0, i / 180 * 3.14, 1, 0, 0, 2]]).to(device)
+        view = geom_utils.azel2uni(param)
+        f = 375
+        IH = 32
+        trans_vox = layer.project(vox, view, IH, f=f)
+        mask = torch.mean(trans_vox, dim=2)  # (N, 1, H, W)
+
+        save_dir = 'outputs'
+        image_utils.save_images(mask, os.path.join(save_dir, 'test_%d' % i))
+
+
+if __name__ == '__main__':
+    from config.config_flag import *
+    app.run(main)
+
+

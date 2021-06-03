@@ -3,10 +3,8 @@
 # --------------------------------------------------------
 from __future__ import print_function
 
-import absl.flags as flags
-import torch.nn as nn
-import torch.nn.functional as F
 from torchvision.models import resnet18
+
 from nnutils import geom_utils
 from nnutils.layers import *
 
@@ -29,12 +27,16 @@ class Scale(nn.Module):
 
 
 class Trans(nn.Module):
-    def __init__(self, inp_dim):
+    def __init__(self, inp_dim, bias=0):
         super().__init__()
         self.body = linear(inp_dim, 3)
+        self.bias = bias
 
     def forward(self, x):
-        return self.body(x)
+        if FLAGS.use_trans > 0:
+            return self.body(x)
+        else:
+            return torch.zeros([x.size(0), 3]).to(x) + self.bias
 
 
 class SO2(nn.Module):

@@ -1,3 +1,4 @@
+examples/
 outputs/
 *.npy
 .idea

@@ -40,7 +40,7 @@ def rot2euler(rot):
     :param rot: (N, 3, 3)
     :return: (N, 3)
     """
-    ea3 = -py_t.matrix_to_euler_angles(rot, 'YXZ')  # negative to stay consistent
+    ea3 = -py_t.matrix_to_euler_angles(rot, 'YXZ')  # negative for consitency
     return ea3
 
 

@@ -50,10 +50,10 @@ class PixTexturizer(nn.Module):
         local_feat, local_vis = mesh_utils.get_local_feat(meshes, self.rasterizer, local_feat, view, sym, vis)
 
         bg_color = kwargs.get('bg', [1, -.5, -.5])
+        # visualize visibility map
         if isinstance(bg_color, list):
             bg_color = torch.FloatTensor([bg_color]).to(local_feat)
-        # todo
-        verts_pix = local_feat * local_vis + bg_color * (1 - local_vis)
-        # verts_pix = local_feat
+        # verts_pix = local_feat * local_vis + bg_color * (1 - local_vis)
+        verts_pix = local_feat
         return verts_pix
 

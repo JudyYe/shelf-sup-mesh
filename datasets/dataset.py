@@ -5,11 +5,10 @@ from __future__ import print_function
 
 import re
 
-import numpy as np
 import torch
-from torch.utils.data import ConcatDataset
 from pytorch3d.structures import Meshes, join_meshes_as_batch
 from torch._six import container_abcs, string_classes, int_classes
+from torch.utils.data import ConcatDataset
 from torch.utils.data import DataLoader
 
 
