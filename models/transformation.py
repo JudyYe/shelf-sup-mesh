@@ -124,13 +124,14 @@ class Perspective3d(nn.Module):
 
 
 #### Pose to world-to-view-mat ####
-def get_world2camera(param, focal):
+def get_world2camera(param, f):
     """
     :param param:
     :return: [sR, t]
     """
     # scale, rot, trans, = geom_utils.param_to_srtf(param)
     scale, trans, rot = param
+    trans[..., -1] = geom_utils.calc_rho(f)
 
     # legacy: rot is rot^T
     rot = geom_utils.homo_to_3x3(rot)
@@ -141,9 +142,11 @@ def get_world2camera(param, focal):
     return cTw
 
 
-def get_camera2world(param, focal):
+def get_camera2world(param, f):
     # scale, rot, trans, = geom_utils.param_to_srtf(param)
     scale, trans, rot = param
+    trans[..., -1] = geom_utils.calc_rho(f)
+
     # legacy: rot is rot^T
     rot_inv = geom_utils.homo_to_3x3(rot)  # N, 3, 3
     rt_inv = geom_utils.rt_to_homo(rot_inv, -torch.matmul(rot_inv, trans.unsqueeze(-1)))
@@ -152,3 +155,13 @@ def get_camera2world(param, focal):
     return wTc
 
 
+if __name__ == '__main__':
+    device = 'cuda'
+    layer = Perspective3d().to(device)
+    H = W = D = 16
+    N = 1
+    vox = torch.zeros([N, 1, D, H, W], device=device)
+
+    param = torch.FloatTensor([0, 0, 1, 0, 0, 2])
+    view = geom_utils.azel2uni(param)
+    f = 375
