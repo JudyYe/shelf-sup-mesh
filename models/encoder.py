@@ -218,18 +218,3 @@ class ResnetEnc(nn.Module):
         view = geom_utils.azel2uni(v)
 
         return [z, hidden_list], [view, v, u]
-
-
-def sample_z(mean_z):
-    """
-    VAE trick, reample z
-    :param mu: (N, Dz)
-    :param varlog:
-    :return: (N, Dz)
-    """
-    if FLAGS.sample_z == 'mean':
-        sample_z = torch.randn_like(mean_z) + mean_z
-    elif FLAGS.sample_z == 'prior':
-        sample_z = torch.randn_like(mean_z)
-    return sample_z
-

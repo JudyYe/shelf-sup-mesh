@@ -17,7 +17,7 @@ from nnutils.utils import load_my_state_dict
 from absl import app
 from config.config_flag import *
 
-flags.DEFINE_string("demo_image", "data/demo_images/", "path to input")
+flags.DEFINE_string("demo_image", "examples/demo_images/", "path to input")
 flags.DEFINE_string("demo_out", "outputs/demo_out", "dir of output")
 flags.DEFINE_string("ckpt_dir", "weights", "dir of output")
 
