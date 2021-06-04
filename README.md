@@ -1,7 +1,7 @@
 
 # Shelf-supervised Mesh Prediction in the wild 
 in CVPR 2021, Yufei Ye, Shubham Tulsiani, Abhinav Gupta
-[Project Page](https://judyye.github.io/ShSMesh/), [Arxiv](https://arxiv.org/abs/2102.06195) 
+[Project Page](https://judyye.github.io/ShSMesh/), [Video](https://youtu.be/OAiFEAuzPZk), [Arxiv](https://arxiv.org/abs/2102.06195) 
 
 ![](https://judyye.github.io/ShSMesh/data/teaser.gif) 
 
