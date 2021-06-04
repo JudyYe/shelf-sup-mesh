@@ -27,10 +27,10 @@ class Scale(nn.Module):
 
 
 class Trans(nn.Module):
-    def __init__(self, inp_dim, bias=0):
+    def __init__(self, inp_dim, bias=(0, 0, 2)):
         super().__init__()
         self.body = linear(inp_dim, 3)
-        self.bias = bias
+        self.register_buffer('bias', torch.FloatTensor([bias]))
 
     def forward(self, x):
         if FLAGS.use_trans > 0:
@@ -218,3 +218,18 @@ class ResnetEnc(nn.Module):
         view = geom_utils.azel2uni(v)
 
         return [z, hidden_list], [view, v, u]
+
+
+def sample_z(mean_z):
+    """
+    VAE trick, reample z
+    :param mu: (N, Dz)
+    :param varlog:
+    :return: (N, Dz)
+    """
+    if FLAGS.sample_z == 'mean':
+        sample_z = torch.randn_like(mean_z) + mean_z
+    elif FLAGS.sample_z == 'prior':
+        sample_z = torch.randn_like(mean_z)
+    return sample_z
+

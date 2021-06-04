@@ -363,9 +363,6 @@ class ViewSampler(nn.Module):
             self.cfg['ele_high'] = self.cfg['ele_high'] / 180 * np.pi
 
         self.sample_method = FLAGS.sample_view
-        self.learn_prior = FLAGS.learn_view_prior
-        if self.learn_prior:
-            self.trans_net = linear_block([2, 16, 16, 2], std=0.2)
 
     def forward(self, N, device, para_u=None, view_u=None):
         """
@@ -378,15 +375,8 @@ class ViewSampler(nn.Module):
         if para_u is None:
             view_u, para_u = geom_utils.sample_view(self.sample_method, N, device, cfg=self.cfg)
 
-        if self.learn_prior:
-            azel, s_t = torch.split(para_u, [2, 4], dim=1)
-            delta = self.trans_net(azel)
-            azel = delta + azel
-            para_v = torch.cat([azel, s_t], dim=1)
-            view_v = geom_utils.azel2uni(para_v)
-        else:
-            delta = torch.zeros_like(para_u[:, 0:2])
-            view_v, para_v = view_u, para_u
+        delta = torch.zeros_like(para_u[:, 0:2])
+        view_v, para_v = view_u, para_u
 
         if FLAGS.so3_enc == 6:
             v6 = geom_utils.azel2u6d(para_v)

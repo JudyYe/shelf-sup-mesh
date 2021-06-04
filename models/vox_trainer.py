@@ -9,6 +9,7 @@ import torch.nn.functional as F
 import pytorch3d.ops as op_3d
 
 from nnutils import geom_utils
+from .encoder import sample_z as enc_sample_z
 from .trainer import BaseTrainer
 FLAGS = flags.FLAGS
 
@@ -19,11 +20,9 @@ class VoxTrainer(BaseTrainer):
 
     def train_step(self, real_datapoint):
         counter = self.counter
-        # ori_real_img = real_datapoint['image']
-        # ori_real_mask = real_datapoint['mask']
-        real_img = real_datapoint['image'] # F.interpolate(ori_real_img, FLAGS.low_reso)
-        real_mask = real_datapoint['mask'] # F.interpolate(ori_real_mask, FLAGS.reso_vox)
-        balance = 1. / (FLAGS.d_loss_recon + FLAGS.d_loss_holo)
+        real_img = real_datapoint['image']
+        real_mask = real_datapoint['mask']
+        balance = 1. / (FLAGS.d_loss_recon + FLAGS.d_loss_holo + FLAGS.d_loss_hallc + 1e-6)
         N = real_mask.size(0)
         device = real_img.device
         # =======================================================================================================
@@ -57,6 +56,13 @@ class VoxTrainer(BaseTrainer):
             d_loss = d_loss + self.summerize_d_fake_loss(holo, 'holo', FLAGS.d_loss_holo * balance)
             self.holo = holo
 
+        if bool(FLAGS.d_loss_hallc):
+            (sample_view2, _), (_, param_u2), delta_view2 = self.G.decoder.view_sampler(N, device)
+            sample_z = enc_sample_z(recon_z)
+            samp = self.G.decoder((sample_z, None), sample_view2)
+            d_loss = d_loss + self.summerize_d_fake_loss(samp, 'samp', FLAGS.d_loss_hallc * balance)
+            self.samp = samp
+
         if counter % 2 == 0:
             d_loss.backward()
             self.d_opt.step()
@@ -82,6 +88,9 @@ class VoxTrainer(BaseTrainer):
         if bool(FLAGS.d_loss_holo):
             g_loss += self.summerize_g_loss(holo, 'holo', FLAGS.d_loss_holo * balance)
 
+        if bool(FLAGS.d_loss_hallc):
+            g_loss += self.summerize_g_loss(samp, 'samp', FLAGS.d_loss_hallc * balance)
+
         if bool(FLAGS.know_mean):
             cyc_loss += self.summerize_cyc_loss(recon['3d'], real_datapoint['mean_shape'], 'mse', 'vox', FLAGS.vox_loss)
 
@@ -99,6 +108,9 @@ class VoxTrainer(BaseTrainer):
             if bool(FLAGS.d_loss_holo):
                 e_loss += self.summerize_content_loss(
                     self.G.encoder(holo[key].detach()), recon_z, holo_u, 'holo', FLAGS.content_loss)
+            if bool(FLAGS.d_loss_hallc):
+                e_loss += self.summerize_content_loss(
+                    self.G.encoder(samp[key].detach()), sample_z, param_u2, 'hallc', FLAGS.content_loss)
 
         # Decoder step
         g_loss.backward(retain_graph=True)
@@ -147,6 +159,9 @@ class VoxTrainer(BaseTrainer):
 
             _, _, nn_param = op_3d.knn_points(self.recon['v_mu'].unsqueeze(0), param.unsqueeze(0), return_nn=True)
             self.evaluator.scatter_view_param(nn_param, self.log_dir, prefix='%d_holo2' % self.counter)
+        if bool(FLAGS.d_loss_hallc):
+            logger.add_images(counter, self.samp['image'], 'hall')
+            self.save_vis(counter, self.samp, 'sampz', self.log_dir)
 
         self.evaluator.vis_view(self.G, self.fix_val_data, num=8, view_mod='az',
                                 prefix='%d' % self.counter, save_dir=self.log_dir)

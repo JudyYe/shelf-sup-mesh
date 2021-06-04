@@ -175,10 +175,6 @@ class Evaluator(object):
         return delta
 
     def render_mesh_rot(self, view_mod, mesh: Meshes, mesh_texture=None, view_param=None, **kwargs):
-        if view_param is not None and 'vaz' in view_mod:
-            # transfrom to view space
-            view_param = view_param.clone()
-            mesh = mesh_utils.transform_verts_to_view(mesh, view_param)
 
         delta = self.get_view_list(view_mod).to(mesh.verts_padded())
         time_len = delta.size(0)
@@ -304,10 +300,10 @@ class Evaluator(object):
                 view_param = mesh_utils.param_to_7dof_batcch(view_param, self.cfg['f'])
             l_u = mesh_utils.get_light_direction(view_param)
             image = render(meshes, view_param, texture, light_direction=l_u, light_color=l_c)
-            image_utils.save_images(image['image'], osp.join(save_dir, '%s_%s_v%d' % (prefix, name, v)))
+            image_utils.save_images(image['image'], osp.join(save_dir, '%s_%s_v%d' % (prefix, name, v)), scale=True)
 
         image = self.render_mesh_rot(mode, meshes, texture, render=render)
-        image_utils.save_gifs(image, osp.join(save_dir, '%s_%s_az' % (prefix, name)))
+        image_utils.save_gifs(image, osp.join(save_dir, '%s_%s_az' % (prefix, name)), scale=True)
 
     def opt_mask(self, model, vox_inp, real_datapoint, opt_view=False, nstep=100):
         vox_mesh, camera_param = vox_inp['mesh'], vox_inp['view']

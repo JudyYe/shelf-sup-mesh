@@ -81,9 +81,6 @@ class MeshRenderWrapper(nn.Module):
 
         if not self.my_shader:
             meshes.textures = mesh_utils.pad_texture(meshes, verts_feat)
-        detach = kwargs.get('det_v', FLAGS.detach_tg)
-        if detach:
-            meshes = mesh_utils.detach_mesh_verts(meshes)
 
         m = kwargs.get('light_direction', np.array([[0, -0.6, 0.8]]))
         color = kwargs.get('light_color', np.array([0.65, 0.3, 0.0]))
