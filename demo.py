@@ -16,14 +16,14 @@ from nnutils.utils import load_my_state_dict
 from absl import app
 from config.config_flag import *
 
-flags.DEFINE_string("demo_image", "examples/wildchair_2.png", "path to input")
-flags.DEFINE_string("demo_out", "outputs/", "dir of output")
+flags.DEFINE_string("demo_image", "examples/allChair_0.png", "path to input")
+flags.DEFINE_string("demo_out", "outputs/demo_out", "dir of output")
 
 FLAGS = flags.FLAGS
 
 # optimization lambda
 FLAGS.lap_loss = 100
-FLAGS.lap_norm_loss = .1
+FLAGS.lap_norm_loss = .5
 FLAGS.cyc_mask_loss = 10
 FLAGS.cyc_perc_loss = 0
 
