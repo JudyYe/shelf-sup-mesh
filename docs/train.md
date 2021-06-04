@@ -64,3 +64,4 @@ For HoloGAN, append the following flags:
 The flags change the renderer to geometric-agnostic one which learns to composite feature points at different depths on a ray. 
 As the projection from feature to RGBA is learned, the masks are not guarantee within 0 and 1, which IoU loss requires. Thus we use l1 loss on masks instead.   
 
+More examples of training commands can be found at [`scripts/exp.sh`](../scripts/exp.sh)
