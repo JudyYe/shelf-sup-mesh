@@ -1,5 +1,10 @@
 python train_test.py  \
     --exp repold  --dataset allChair  --cfg_file config/pmBigChair.json  \
+    --seed 1234 \
+    --gpu 0
+
+python train_test.py  \
+    --exp repold  --dataset allChair  --cfg_file config/pmBigChair.json  \
     --gpu 0
 
 

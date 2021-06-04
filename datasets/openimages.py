@@ -18,7 +18,7 @@ class OpenImage(BaseData):
             split = 'validation'
         super().__init__(cfg, dataset, split, train)
         self.data_dir = 'data/openimages/'
-        self.filter_trunc = cfg.DB.DET_TRUNC
+        self.filter_trunc = self.cfg.filter_trunc
         self.cls2id, self.id2cls = self.get_wnid()
         self.cats = self.parse_name(dataset[2:])
         self.image_dir = os.path.join(self.data_dir, 'JPEGImages')

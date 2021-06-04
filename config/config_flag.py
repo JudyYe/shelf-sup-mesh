@@ -13,7 +13,6 @@ flags.DEFINE_string("enc", "res", "kCam or res")
 flags.DEFINE_string("e_norm", "instance", "batch / instance / none / myin")
 flags.DEFINE_string("z_map", "regular", "regular / equal")
 flags.DEFINE_string("sample_view", "cfg", "[cfg, side]")
-flags.DEFINE_integer("learn_view_prior", 0, "")
 flags.DEFINE_integer("use_scale", 0, "")
 flags.DEFINE_integer("use_trans", 0, "")
 
@@ -161,4 +160,5 @@ flags.DEFINE_integer('balance_loss', 1, '')
 flags.DEFINE_string('normal_loss_type', 'expLoss', '')
 flags.DEFINE_float('vvp_loss', 0. , '')
 flags.DEFINE_float('biharm_loss', 00., '' )
+flags.DEFINE_integer("learn_view_prior", 0, "")
 # ################ ~deprecated ################

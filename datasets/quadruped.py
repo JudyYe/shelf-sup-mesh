@@ -35,6 +35,7 @@ class QuadImNet(BaseData):
 
         self.cats = self.parse_name(dataset[2:])
         self.preload_anno()
+        np.random.seed(123)
         self.map = np.random.permutation(len(self))
 
     def parse_name(self, dataset: str):
@@ -46,7 +47,7 @@ class QuadImNet(BaseData):
 
     def preload_anno(self):
         # load mean shape
-        vox_path = os.path.join(self.data_dir, 'Voxs', 'mean_%d.npz' % self.cfg.SIZE.VOXEL)
+        vox_path = os.path.join(self.data_dir, 'Voxs', 'mean_%d.npz' % self.cfg.reso_vox)
         vox = np.load(vox_path)['vox']
         vox = np.flip(vox, [-2])
         vox = vox.transpose([2, 1, 0])  # x-zswip

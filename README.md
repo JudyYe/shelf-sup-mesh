@@ -19,11 +19,12 @@ and integrated [LPIPS]((https://github.com/richzhang/PerceptualSimilarity)).
 To voxelize meshes for evaluation, we use util code in [Occupancy Net](https://github.com/autonomousvision/occupancy_networks/tree/master/im2mesh) but did not include it in this reimplementation.  
 
 
-## Demo: Estimate mesh with pretrained model
+## Demo: Estimate mesh with our pretrained model
 Download pretrained models to `weights/`
 
 | dataset | model |
 | --- | --- |
+|OpenImages-50 | [tar link]() |
 |Chairs in the wild | [link](https://drive.google.com/file/d/1cZVOB7doSC2-DyqkzUSLoSkvKrYPdZOq/view?usp=sharing) |
 |Quadrupeds | [link](https://drive.google.com/file/d/1IpQMvZnProHcENIa-GC_IEaxY9e1zvH6/view?usp=sharing) |
 |CUB-200-2011 | [link](https://drive.google.com/file/d/1Y-jf-CxhVX83FDDsT4hA6UG44xFQTFqG/view?usp=sharing) |
@@ -35,13 +36,19 @@ Similar results should be saved at `outputs/`
 
 |input | output shape | output shape w/ texture | 
 |---| ---| --- |
-|![](examples/wildchair_2.png) | ![](examples/wildchair_2_0_mesh_pred.gif) | ![](examples/wildchair_2_0_meshTexture_pred.gif)|
+|TODO!!!!!!!!![](examples/wildchair.png) | ![](examples/.gif) | ![](examples/wildchair_2_0_meshTexture_pred.gif)|
 
-or for other category: 
+or for other categories:
+!!!!TEST!!
 ```
 python demo.py  --checkpoint=weights/cub.pth --demo_image examples/cub_0.png
 python demo.py  --checkpoint=weights/wildchair.pth --demo_image examples/wildchair_0.png
 python demo.py  --checkpoint=weights/quad.pth --demo_image examples/llama.png
+```
+
+for openimages 50 categories, it will reconstruct images under `data/demo_images/`:
+```
+python demo_all_cls.py 
 ```
 
 
