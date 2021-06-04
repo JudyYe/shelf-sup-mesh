@@ -64,7 +64,7 @@ For more training details, please refer to [`train.md`](docs/train.md)
 
 ## Citation
 If you find this work useful, please consider citing:
-```apex
+```
 @inProceedings{ye2021shelf,
   title={Shelf-Supervised Mesh Prediction in the Wild},
   author={Ye, Yufei and Tulsiani, Shubham and  Gupta, Abhinav},
