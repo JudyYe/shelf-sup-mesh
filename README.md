@@ -36,17 +36,17 @@ Similar results should be saved at `outputs/`
 
 |input | output shape | output shape w/ texture | 
 |---| ---| --- |
-|TODO!!!!!!!!![](examples/wildchair.png) | ![](examples/.gif) | ![](examples/wildchair_2_0_meshTexture_pred.gif)|
+|![](examples/allChair_0.png) | ![](examples/demo_out/allChair_0_mesh_az.gif) | ![](examples/demo_out/allChair_0_meshTexture_az.gif)|
 
-or for other categories:
-!!!!TEST!!
+or for other curated categories:
+
 ```
 python demo.py  --checkpoint=weights/cub.pth --demo_image examples/cub_0.png
 python demo.py  --checkpoint=weights/wildchair.pth --demo_image examples/wildchair_0.png
 python demo.py  --checkpoint=weights/quad.pth --demo_image examples/llama.png
 ```
 
-for openimages 50 categories, it will reconstruct images under `data/demo_images/`:
+for openimages 50 categories, the following script will reconstruct images under `data/demo_images/`:
 ```
 python demo_all_cls.py 
 ```
