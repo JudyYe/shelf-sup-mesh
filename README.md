@@ -65,10 +65,10 @@ For more training details, please refer to [`train.md`](docs/train.md)
 ## Citation
 If you find this work useful, please consider citing:
 ```apex
-@article{ye2021shelf,
+@inProceedings{ye2021shelf,
   title={Shelf-Supervised Mesh Prediction in the Wild},
   author={Ye, Yufei and Tulsiani, Shubham and  Gupta, Abhinav},
   year={2021},
-  booktitle={arXiv preprint arXiv:2102.06195}
+  booktitle={Computer Vision and Pattern Recognition (CVPR)}
 }
 ```
