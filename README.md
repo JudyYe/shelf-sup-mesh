@@ -14,7 +14,7 @@ frame, along with the camera pose for the input image.
 2. **Instance-level Specialization.** The coarse volumetric prediction is converted to a mesh-based representation, which is further optimized in the predicted camera frame given the input image.
 
 This code repo is a re-implementation of the paper. The code is developed based on [Pytorch 1.3](https://pytorch.org/) 
-(Pytorch >=1.5 adds backprop version check which will trigger a [runtime error](https://github.com/pytorch/pytorch/issues/46638)), 
+(Pytorch >=1.5 adds backprop version check which will trigger a [runtime error](https://discuss.pytorch.org/t/solved-pytorch1-5-runtimeerror-one-of-the-variables-needed-for-gradient-computation-has-been-modified-by-an-inplace-operation/90256)), 
 [Pytorch3d 0.2.0](https://github.com/facebookresearch/pytorch3d/tree/master/pytorch3d),
 and integrated [LPIPS](https://github.com/richzhang/PerceptualSimilarity).
 To voxelize meshes for evaluation, we use util code in [Occupancy Net](https://github.com/autonomousvision/occupancy_networks/tree/master/im2mesh) but did not include it in this reimplementation.  
