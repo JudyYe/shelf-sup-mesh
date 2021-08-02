@@ -25,7 +25,7 @@ Download pretrained models to `weights/`
 
 | dataset | model |
 | --- | --- |
-|OpenImages-50 | [tar link]() |
+|OpenImages-50 | [tar link](https://drive.google.com/file/d/1BOIcPRXdpKPNi6G3pjDSkyaKGCf5kMDm/view?usp=sharing) |
 |Chairs in the wild | [link](https://drive.google.com/file/d/1cZVOB7doSC2-DyqkzUSLoSkvKrYPdZOq/view?usp=sharing) |
 |Quadrupeds | [link](https://drive.google.com/file/d/1IpQMvZnProHcENIa-GC_IEaxY9e1zvH6/view?usp=sharing) |
 |CUB-200-2011 | [link](https://drive.google.com/file/d/1Y-jf-CxhVX83FDDsT4hA6UG44xFQTFqG/view?usp=sharing) |
