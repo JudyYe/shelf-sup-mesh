@@ -3,7 +3,7 @@
 - Download masks of the images and put them under `data/openimages/Segs/`
 - Download necessary meta data like mapping between wnid and class name([`class-descriptions-boxable.csv`](https://storage.googleapis.com/openimages/v5/class-descriptions-boxable.csv)).   
 - Filter masks.  Masks in OpenImages may be occluded or truncated, which our method does not handle. We filter them out by a  finetuned classifier automatically.
-You are welcome to train your own models but we provide the predicted scores from our model [here](). 
+You are welcome to train your own models but we provide the predicted scores from our model [here](https://drive.google.com/file/d/1myeDBjfCTF8LawyORvitUHJTROrcPW4g/view?usp=sharing). 
   
 The data directory is expected of the following structure:
 ```
@@ -14,7 +14,7 @@ data/
     Segs/
       Masks/*  # foregroumd masks
       train\/val-annotations-object-segmentation.csv  # Train/validation Mask data from official website  
-      train\/val-obj-seg-%s.csv # auto filtering
+      train\/val-obj-seg-occBal.csv # auto trucation score, download from here: https://drive.google.com/file/d/1myeDBjfCTF8LawyORvitUHJTROrcPW4g/view?usp=sharing
 ```
 
 ## Chairs in the wild
