@@ -51,9 +51,9 @@ data/
 Please follow [this](https://github.com/akanazawa/cmr/blob/master/doc/train.md)
 A direct link to the cache we used by following their intruction can be found [here](https://drive.google.com/file/d/17w5Aq6IH64p9nntqZOMdQcTaF0Wl4JeO/view?usp=sharing).
  
-### Quadrupeds
+## Quadrupeds
 Please follow [this](https://github.com/nileshkulkarni/acsm/tree/master/quadruped_data) to setup data.
 
 
-### ShapeNet
+## ShapeNet
 Our rendered images can be found [here](https://drive.google.com/file/d/1vASrBZzeaHgwDUoUb3G9EtsCQ6qEsoXx/view?usp=sharing).
