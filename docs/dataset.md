@@ -3,7 +3,7 @@
 - Download masks of the images and put them under `data/openimages/Segs/`
 - Download necessary meta data like mapping between wnid and class name([`class-descriptions-boxable.csv`](https://storage.googleapis.com/openimages/v5/class-descriptions-boxable.csv)).   
 - Filter masks.  Masks in OpenImages may be occluded or truncated, which our method does not handle. We filter them out by a  finetuned classifier automatically.
-You are welcome to train your own models but we provide the predicted scores from our model [here](https://drive.google.com/file/d/1myeDBjfCTF8LawyORvitUHJTROrcPW4g/view?usp=sharing). 
+You are welcome to train your own models but we provide the predicted scores from our model [here](https://drive.google.com/file/d/1myeDBjfCTF8LawyORvitUHJTROrcPW4g/view?usp=sharing). We just appended one additional column `truncated` as the quality score (-1 means N/A) to the original OpenImages [meta data](https://storage.googleapis.com/openimages/v5/train-annotations-object-segmentation.csv). 
   
 The data directory is expected of the following structure:
 ```
@@ -49,6 +49,11 @@ data/
 
 ## CUB-200-2011
 Please follow [this](https://github.com/akanazawa/cmr/blob/master/doc/train.md)
+A direct link to the cache we used by following their intruction can be found [here](https://drive.google.com/file/d/17w5Aq6IH64p9nntqZOMdQcTaF0Wl4JeO/view?usp=sharing).
  
 ### Quadrupeds
 Please follow [this](https://github.com/nileshkulkarni/acsm/tree/master/quadruped_data) to setup data.
+
+
+### ShapeNet
+Our rendered images can be found [here](https://drive.google.com/file/d/1vASrBZzeaHgwDUoUb3G9EtsCQ6qEsoXx/view?usp=sharing).
